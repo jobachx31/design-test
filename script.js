@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <div class="project-list">
               <a href="#" target="_blank" class="project-item-link">
                 <div class="project-item">
-                  <img src="https://placehold.co/120x90/292929/e8e8e8?text= " alt="Project A" class="project-image" />
+                  <img src="https://placehold.co/120x90/292929/e8e8e8?text=..." alt="Project A" class="project-image" />
                   <div class="project-description">
                   <h3> </h3>
                   <p> </p>
@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
               </a>
               <a href="#" target="_blank" class="project-item-link">
                 <div class="project-item project-item--reverse">
-                  <img src="https://placehold.co/120x90/292929/e8e8e8?text= " alt="Project " class="project-image" />
+                  <img src="https://placehold.co/120x90/292929/e8e8e8?text=..." alt="Project " class="project-image" />
                   <div class="project-description">
                   <h3> </h3>
                   <p> </p>
