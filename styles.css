@@ -5,6 +5,7 @@
   --foreground-secondary: #d9d9d9;
   --border: rgba(255, 255, 255, 0.1);
   --accent: #1dadc0;
+  --accent-soft: rgba(29, 173, 192, 0.2);
   --hint: #6c6c6c;
 }
 
