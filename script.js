@@ -18,19 +18,19 @@ document.addEventListener("DOMContentLoaded", () => {
             <div class="project-list">
               <a href="#" target="_blank" class="project-item-link">
                 <div class="project-item">
-                  <img src="https://placehold.co/120x90/292929/e8e8e8?text=Project+A" alt="Project A" class="project-image" />
+                  <img src="https://placehold.co/120x90/292929/e8e8e8?text=A" alt="Project A" class="project-image" />
                   <div class="project-description">
-                  <h3>Project A</h3>
-                  <p>A short description of this cool project.</p>
+                  <h3>A</h3>
+                  <p>...</p>
                   </div>
                 </div>
               </a>
               <a href="#" target="_blank" class="project-item-link">
                 <div class="project-item project-item--reverse">
-                  <img src="https://placehold.co/120x90/292929/e8e8e8?text=Project+B" alt="Project B" class="project-image" />
+                  <img src="https://placehold.co/120x90/292929/e8e8e8?text=B" alt="Project " class="project-image" />
                   <div class="project-description">
-                  <h3>Project B</h3>
-                  <p>Details about what Project B is all about.</p>
+                  <h3>B</h3>
+                  <p>...</p>
                   </div>
                 </div>
               </a>
