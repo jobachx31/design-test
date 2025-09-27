@@ -328,14 +328,85 @@ button.active {
 }
 
 .site-footer {
-  padding: 1rem;
+  padding: 0 1rem 1rem 1rem;
   text-align: center;
   color: var(--hint);
   font-size: 0.75rem; /* 12px */
   flex-shrink: 0; /* Prevent footer from shrinking */
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .site-footer p {
   margin: 0.25rem 0;
   line-height: 1.4;
+}
+
+/* --- Responsive Design --- */
+
+/* For tablets and smaller devices */
+@media (max-width: 768px) {
+  .content-wrapper {
+    width: 90vw; /* Use more of the screen width */
+  }
+}
+
+/* For mobile phones */
+@media (max-width: 480px) {
+  html,
+  body {
+    font-size: 120%; /* Reduce base font size for better scaling on small screens */
+    padding-bottom: 5rem; /* Add space for the fixed nav bar to prevent overlap */
+  }
+
+  .main {
+    justify-content: center; /* Center the card vertically */
+    padding-top: 0; /* Remove top padding to allow true centering */
+  }
+
+  .content-wrapper {
+    padding-top: 0; /* Remove top padding as nav is no longer there */
+  }
+
+  .nav-buttons {
+    /* Pin to the bottom of the viewport */
+    position: fixed;
+    top: auto;
+    bottom: 0;
+    left: 0;
+    /* Center the container and set its width */
+    right: auto;
+    width: 75%;
+    left: 50%;
+    transform: translateX(-50%);
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    z-index: 10;    
+  }
+
+  .nav-buttons button:hover {
+    /* Disable hover growth on mobile to prevent layout shifts on tap */
+    flex-grow: 1;
+    padding: 0.4rem 0.5rem;
+  }
+
+  .bio-header {
+    flex-direction: column-reverse; /* Stack image and text vertically */
+    text-align: center; /* Center the text below the image */
+    gap: 1rem;
+  }
+
+  .bio-summary {
+    text-align: center;
+  }
+
+  .copy-btn {
+    /* Hide the copy button on small screens to reduce clutter */
+    display: none;
+  }
+
+  .site-footer {
+    /* Hide the footer on mobile to save space */
+    display: none;
+  }
 }
