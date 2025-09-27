@@ -69,6 +69,62 @@ body::-webkit-scrollbar {
   text-decoration: none;
 }
 
+.email-container {
+  display: inline-flex; /* Allows it to be centered by parent's text-align and wraps content */
+  position: relative; /* Establishes positioning context for the absolute button */
+  align-items: center;
+  justify-content: center;
+  /* Removed gap as button is absolutely positioned */
+  margin-top: 0.5rem;
+  flex-wrap: wrap; /* Allows button to wrap on small screens */
+}
+
+.email-text-wrapper {
+  display: inline-block; /* To allow transitions */
+  transition: opacity 200ms ease-in-out;
+}
+
+.fading {
+  opacity: 0;
+}
+
+/* Style for the "Copied!" text */
+.email-text-wrapper span {
+  color: var(--accent);
+}
+
+.copy-btn {
+  background: none;
+  color: var(--text);
+  border: none;
+  border-radius: 0;
+  padding: 0.2rem; /* Small padding to increase click area */
+  /* font-size removed as it's an SVG now */
+  cursor: pointer;
+  transition: color 150ms ease, opacity 200ms ease-in-out;
+
+  position: absolute; /* Positioned relative to .email-container */
+  top: 50%; /* Vertically center */
+  transform: translateY(-50%); /* Adjust for button's own height */
+  left: calc(100% + 0.5rem); /* Position to the right of the email-container with a gap */
+  display: flex; /* To center the SVG inside the button */
+  align-items: center;
+  justify-content: center;
+}
+
+.copy-btn:hover {
+  color: var(--accent);
+  transform: translateY(-50%); /* Override generic button hover transform */
+}
+
+.copy-btn svg {
+  display: block; /* Prevents extra space below SVG */
+}
+
+.copy-btn.copied {
+  color: var(--accent);
+}
+
 b {
   font-weight: normal;
   color: var(--accent);
@@ -125,7 +181,8 @@ button {
   transition: flex-grow 150ms ease-in-out, padding 180ms ease-in-out 100ms;
 }
 
-button:hover {
+/* Apply hover only to nav buttons, not all buttons */
+.nav-buttons button:hover {
   background-color: var(--foreground);
   flex-grow: 1.2;
   cursor: pointer;

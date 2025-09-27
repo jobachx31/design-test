@@ -36,8 +36,17 @@ document.addEventListener("DOMContentLoaded", () => {
               </a>
             </div>
             `,
-    contact: `You can reach me via email:<br />
-              <a href="mailto:hello@example.com">mbabachajoseph@gmail.com</a>
+    contact: `You can reach me via email:<br>
+              <div class="email-container">
+                <div class="email-text-wrapper">
+                  <a href="mailto:mbabachajoseph@gmail.com" id="email-link">mbabachajoseph@gmail.com</a>
+                </div>
+                <button id="copy-email-btn" class="copy-btn" title="Copy email address">
+                  <svg xmlns="http://www.w3.org/2000/svg" height="16" viewBox="0 96 960 960" width="16" fill="currentColor">
+                    <path d="M180 936q-24 0-42-18t-18-42V276h60v600h480v60H180Zm120-120q-24 0-42-18t-18-42V156q0-24 18-42t42-18h440q24 0 42 18t18 42v560q0 24-18 42t-42 18H300Zm0-60h440V156H300v600Zm0 0V156v600Z"/>
+                  </svg>
+                </button>
+              </div>
               <br />
               <br />or here too...
               <div class="socials">
@@ -83,5 +92,53 @@ document.addEventListener("DOMContentLoaded", () => {
         cardContent.style.opacity = 1;
       }, 150); // This duration should match the CSS transition
     });
+  });
+
+  // Event delegation for dynamically added content
+  cardContent.addEventListener("click", (event) => {
+    const copyButton = event.target.closest("#copy-email-btn");
+    const emailLink = event.target.closest("#email-link");
+
+    // Trigger if the copy button OR the email link is clicked
+    if (copyButton || emailLink) {
+      // If the link was clicked, prevent the default mailto: redirect
+      if (emailLink) {
+        event.preventDefault();
+      }
+
+      const container = event.target.closest(".email-container");
+      const theButton = container.querySelector("#copy-email-btn");
+      const emailWrapper = container.querySelector(".email-text-wrapper");
+      const theEmail = emailWrapper.querySelector("a").textContent;
+      const originalContent = emailWrapper.innerHTML;
+
+      // Only run if the animation isn't already active
+      if (!theButton.classList.contains("copied")) {
+        navigator.clipboard.writeText(theEmail).then(() => {
+          theButton.classList.add("copied");
+          emailWrapper.classList.add("fading");
+          theButton.classList.add("fading");
+
+          // 1. After fade out, show "Copied!"
+          setTimeout(() => {
+            emailWrapper.innerHTML = "<span>Copied!</span>";
+            emailWrapper.classList.remove("fading");
+
+            // 2. After 1 second, fade out "Copied!"
+            setTimeout(() => {
+              emailWrapper.classList.add("fading");
+
+              // 3. After fade out, restore original email
+              setTimeout(() => {
+                emailWrapper.innerHTML = originalContent;
+                emailWrapper.classList.remove("fading");
+              theButton.classList.remove("fading");
+                theButton.classList.remove("copied"); // Re-enable button
+              }, 200); // Matches CSS transition
+            }, 1000); // How long "Copied!" stays visible
+          }, 200); // Matches CSS transition
+        });
+      }
+    }
   });
 });
