@@ -11,6 +11,7 @@
 
 html,
 body {
+  overscroll-behavior: none;
   height: 100%; /* Ensure body and html take full height for main section centering */
   /* Set the base font size. Changing this value will scale the entire UI. */
   /* 100% is typically 16px in most browsers. */

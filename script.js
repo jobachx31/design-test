@@ -117,7 +117,7 @@ document.addEventListener("DOMContentLoaded", () => {
         navigator.clipboard.writeText(theEmail).then(() => {
           theButton.classList.add("copied");
           emailWrapper.classList.add("fading");
-          theButton.classList.add("fading");
+           theButton.classList.add("fading");
 
           // 1. After fade out, show "Copied!"
           setTimeout(() => {
