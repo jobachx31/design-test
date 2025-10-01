@@ -1,4 +1,31 @@
 document.addEventListener("DOMContentLoaded", () => {
+  const createFloatingShapes = () => {
+    const shapesContainer = document.getElementById("background-shapes");
+    if (!shapesContainer) return;
+
+    const numberOfShapes = 10; // Adjust number of shapes here
+
+    for (let i = 0; i < numberOfShapes; i++) {
+      const shape = document.createElement("div");
+      shape.classList.add("shape");
+
+      // Random size (e.g., between 20px and 100px)
+      const size = Math.random() * 80 + 20;
+      shape.style.width = `${size}px`;
+      shape.style.height = `${size}px`;
+
+      // Random starting position across the viewport width
+      shape.style.left = `${Math.random() * 100}vw`;
+
+      // Random animation duration and delay
+      const duration = Math.random() * 20 + 15; // 15s to 35s
+      const delay = Math.random() * 10; // 0s to 10s delay
+      shape.style.animation = `float ${duration}s ${delay}s linear infinite`;
+
+      shapesContainer.appendChild(shape);
+    }
+  };
+
   const cardContent = document.getElementById("card-content");
   const navButtons = document.querySelectorAll(".nav-buttons button");
 
@@ -68,9 +95,16 @@ document.addEventListener("DOMContentLoaded", () => {
               </div>`,
   };
 
+  const card = document.querySelector(".card");
+
   // Set initial active state
   document.getElementById("bio-btn").classList.add("active");
   cardContent.innerHTML = contentData.bio;
+  // Set initial height
+  card.style.height = `${cardContent.scrollHeight}px`;
+
+  // Create the background animation
+  createFloatingShapes();
 
   navButtons.forEach((button) => {
     button.addEventListener("click", () => {
@@ -88,9 +122,13 @@ document.addEventListener("DOMContentLoaded", () => {
         const contentKey = button.id.replace("-btn", ""); // e.g., "bio-btn" -> "bio"
         cardContent.innerHTML = contentData[contentKey];
 
-        // 3. Start fade-in animation for new content
+        // 3. Set the card's height to match the new content's height
+        card.style.height = `${cardContent.scrollHeight}px`;
+
+        // 4. Start fade-in animation for new content
         cardContent.style.opacity = 1;
-      }, 150); // This duration should match the CSS transition
+
+      }, 200); // This duration should match the CSS opacity transition
     });
   });
 

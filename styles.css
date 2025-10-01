@@ -20,6 +20,28 @@ body {
   padding: 0; /* Remove default body padding */
 }
 
+/* --- Background Shapes Animation --- */
+#background-shapes {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1; /* Places it behind all other content */
+  overflow: hidden; /* Prevents scrollbars if shapes go outside */
+}
+
+.shape {
+  position: absolute;
+  bottom: -150px; /* Start below the viewport */
+  background-color: var(--accent);
+  opacity: 0.1; /* Make them very subtle */
+  border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; /* Creates organic, blob-like shapes */
+  animation: float 25s linear infinite; /* Animation name, duration, timing, and iteration */
+}
+
+/* --- End Background Shapes --- */
+
 * {
   /* Keep font-family for all elements */
   font-family: "Work Sans", sans-serif;
@@ -44,18 +66,20 @@ body::-webkit-scrollbar {
 .card {
   border-radius: 1rem; /* 16px */
   /* Apply padding to card */
-  padding: 2rem;
+  padding: 0; /* Padding will be moved to the inner container */
   background-color: var(--foreground);
-  font-size: 1rem;;
+  font-size: 1rem;
   border: 0.0625rem solid rgba(0, 0, 0, 0.2); /* 1px */
   color: var(--text);
   text-align: center;
-  transition: all 150ms ease-in-out;
+  transition: height 350ms ease-out; /* Animate height with an ease-out effect */
+  overflow: hidden; /* Keep content from spilling out during transition */
 }
 
 #card-content {
   /* Smooth transition for the fade effect */
-  transition: opacity 150ms ease-in-out;
+  transition: opacity 200ms ease-in-out;
+  padding: 2rem; /* Apply padding here instead of the parent card */
 }
 
 .card ul,
@@ -183,7 +207,7 @@ button {
 }
 
 /* Apply hover only to nav buttons, not all buttons */
-.nav-buttons button:hover {
+.nav-buttons button:not(.active):hover {
   background-color: var(--foreground);
   flex-grow: 1.2;
   cursor: pointer;
@@ -201,9 +225,9 @@ button {
 }
 
 button.active {
-  color: var(--accent);
-  border: 2px solid;
-  border-color: var(--accent);
+  background-color: var(--accent);
+  color: var(--foreground); /* Use a light color for contrast on the accent background */
+  border: none; /* Remove the border */
 }
 
 /* Adjust box-shadow for dark mode */
@@ -343,6 +367,14 @@ button.active {
   line-height: 1.4;
 }
 
+@keyframes float {
+  from {
+    transform: translateY(0) rotate(0deg);
+  }
+  to {
+    transform: translateY(-120vh) rotate(720deg); /* Move up past the top of the screen and rotate */
+  }
+}
 /* --- Responsive Design --- */
 
 /* For tablets and smaller devices */
