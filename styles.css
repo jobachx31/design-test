@@ -176,9 +176,9 @@ b {
   display: flex;
   flex-grow: 1; /* Allow main to fill available space */
   flex-direction: column;
-  justify-content: center; /* Center content vertically */
+  justify-content: flex-start; /* Align content to the top */
   align-items: center;
-  /* padding-top: 15vh; Removed to allow true vertical centering */
+  padding-top: 15vh; /* Push the content down from the top */
   padding-bottom: 4rem; /* Add padding to prevent content from overlapping the fixed footer */
 }
 
@@ -630,7 +630,21 @@ button.active {
   }
 
   .main {
+    /* Override desktop padding to move card to the top */
+    padding-top: 2rem;
     padding-bottom: 5rem; /* Add space for the fixed nav bar to prevent overlap */
+  }
+
+  .content-wrapper {
+    padding-top: 0; /* Nav buttons are at the bottom on mobile, so remove this space */
+  }
+
+  .cv-download-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-top: -1.5rem; /* Pull button up to overlap above the card */
+    align-self: auto; /* Reset flex property */
   }
 
   .nav-buttons {
