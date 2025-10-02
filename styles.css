@@ -178,6 +178,7 @@ b {
   justify-content: flex-start; /* Align content to the top */
   align-items: center;
   padding-top: 15vh; /* Push the content down from the top */
+  padding-bottom: 4rem; /* Add padding to prevent content from overlapping the fixed footer */
 }
 
 .nav-buttons {
@@ -296,6 +297,50 @@ button.active {
   color: var(--hint);
 }
 
+.cv-download-btn {
+  /* Changed from absolute positioning to a static block element */
+  align-self: flex-end; /* Align to the right of the content-wrapper */
+  display: inline-flex; /* Use inline-flex to wrap content snugly */
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem; /* Space between icon and text */
+  padding: 0.6rem 1.2rem; /* Padding for the pill shape */
+  background-color: var(--accent);
+  border-radius: 2rem; /* Large radius for the pill shape */
+  /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); */
+  cursor: pointer;
+  color: var(--foreground); /* Set icon and text color */
+  font-size: 0.9rem;
+  font-weight: 500;
+  /* Adjust transform origin for the bubble animation */
+  transform-origin: center; /* Animate growth from the center */
+  transform: scale(0);
+  transition: transform 200ms ease-in-out, box-shadow 200ms ease-in-out, opacity 200ms ease-in-out;
+  opacity: 0;
+}
+
+.cv-download-btn.visible {
+  opacity: 1;
+  animation: bubble-in 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+}
+
+.cv-download-btn:hover {
+  transform: scale(1.05); /* Slightly reduce hover scale effect */
+  /* box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25); */
+}
+
+.cv-download-btn svg {
+  width: 1.2rem; /* 19px */
+  height: 1.2rem; /* 19px */
+  display: block;
+}
+/* Hide the actual link, as the parent div is now the visible, clickable element */
+.cv-download-btn a {
+  display: contents; /* Makes the 'a' tag pass its children to the parent flexbox */
+  color: inherit; /* Ensure the text and icon inherit the parent's color */
+  text-decoration: none;
+}
+
 .project-list {
   display: flex;
   flex-direction: column;
@@ -314,13 +359,34 @@ button.active {
   padding: 0.5rem;
   background-color: var(--foreground-secondary);
   border-radius: 0.25rem;
-  border: 2px solid transparent;
-  transition: transform 150ms ease-in-out, border-color 150ms ease-in-out;
+  /* border: 2px solid transparent; */
+  position: relative; /* Required for the ::before pseudo-element */
+  overflow: hidden; /* Keeps the hotspot effect contained */
+  /* Added background-color to transition for a smooth hover effect */
+  transition: transform 150ms ease-in-out;
+}
+
+/* The hotspot pseudo-element */
+.project-item::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* Create a radial gradient positioned by our JS-updated custom properties */
+  background: radial-gradient(circle at var(--mouse-x) var(--mouse-y), var(--accent-soft) 0%, transparent 150px);
+  opacity: 0;
+  transition: opacity 150ms ease-in-out;
+  z-index: 0; /* Place it below the content */
 }
 
 .project-item:hover {
   transform: translateY(-4px);
-  border-color: var(--accent);
+}
+
+.project-item:hover::before {
+  opacity: 1; /* Fade in the hotspot on hover */
 }
 
 .project-item--reverse {
@@ -337,6 +403,7 @@ button.active {
 
 .project-description {
   text-align: left;
+  position: relative; /* Ensure text is on top of the hotspot effect */
 }
 
 .project-description p {
@@ -353,11 +420,13 @@ button.active {
 }
 
 .site-footer {
-  padding: 0 1rem 1rem 1rem;
+  position: fixed; /* Pin the footer to the viewport */
+  bottom: 0; /* Align to the bottom */
+  left: 0; /* Align to the left */
+  padding: 1rem;
   text-align: center;
   color: var(--hint);
   font-size: 0.75rem; /* 12px */
-  flex-shrink: 0; /* Prevent footer from shrinking */
   width: 100%;
   box-sizing: border-box;
 }
@@ -367,6 +436,14 @@ button.active {
   line-height: 1.4;
 }
 
+@keyframes bubble-in {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
 @keyframes float {
   from {
     transform: translateY(0) rotate(0deg);

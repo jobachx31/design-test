@@ -47,6 +47,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 <div class="project-item">
                   <img src="https://placehold.co/120x90/292929/e8e8e8?text=..." alt="Project A" class="project-image" />
                   <div class="project-description">
+                  <h3>Project A</h3>
+                  <p>A short description of this project.</p>
                   <h3> </h3>
                   <p> </p>
                   </div>
@@ -56,6 +58,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 <div class="project-item project-item--reverse">
                   <img src="https://placehold.co/120x90/292929/e8e8e8?text=..." alt="Project " class="project-image" />
                   <div class="project-description">
+                  <h3>Project B</h3>
+                  <p>A short description of this other project.</p>
                   <h3> </h3>
                   <p> </p>
                   </div>
@@ -97,11 +101,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const card = document.querySelector(".card");
 
+  // --- Function to handle CV button animation ---
+  const handleCvButton = (contentKey) => {
+    const cvButton = document.querySelector(".cv-download-btn");
+    if (cvButton) {
+      // Hide it initially
+      cvButton.classList.remove("visible");
+
+      // If we are on the bio tab, show it after a delay
+      setTimeout(() => {
+        if (contentKey === "bio") {
+          cvButton.classList.add("visible");
+        }
+      }, 600); // 0.6 second delay
+    }
+  };
+
   // Set initial active state
   document.getElementById("bio-btn").classList.add("active");
   cardContent.innerHTML = contentData.bio;
   // Set initial height
   card.style.height = `${cardContent.scrollHeight}px`;
+  // Handle the CV button for the initial load
+  handleCvButton("bio");
 
   // Create the background animation
   createFloatingShapes();
@@ -127,6 +149,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // 4. Start fade-in animation for new content
         cardContent.style.opacity = 1;
+
+        // 5. Handle the CV button visibility
+        handleCvButton(contentKey);
 
       }, 200); // This duration should match the CSS opacity transition
     });
@@ -177,6 +202,29 @@ document.addEventListener("DOMContentLoaded", () => {
           }, 200); // Matches CSS transition
         });
       }
+    }
+  });
+
+  // Separate event listener for the static CV button
+  const cvButton = document.querySelector(".cv-download-btn");
+  cvButton?.addEventListener("click", () => {
+    // Find the link inside and click it programmatically
+    cvButton.querySelector("#cv-download-link")?.click();
+  });
+
+  // --- Project Item Hotspot Effect ---
+  card.addEventListener("mousemove", (event) => {
+    const projectItem = event.target.closest(".project-item");
+
+    if (projectItem) {
+      // Get the position of the cursor relative to the project item
+      const rect = projectItem.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+
+      // Set the CSS custom properties on the element
+      projectItem.style.setProperty("--mouse-x", `${x}px`);
+      projectItem.style.setProperty("--mouse-y", `${y}px`);
     }
   });
 });
