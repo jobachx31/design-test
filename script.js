@@ -103,17 +103,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // --- Function to handle CV button animation ---
   const handleCvButton = (contentKey) => {
-    const cvButton = document.querySelector(".cv-download-btn");
-    if (cvButton) {
+    const cvBtn = document.querySelector(".cv-download-btn");
+    if (cvBtn) {
+      // Reset any temporary state
+      cvBtn.classList.remove("is-downloading");
+
       // Hide it initially
-      cvButton.classList.remove("visible");
+      cvBtn.classList.remove("visible");
 
       // If we are on the bio tab, show it after a delay
-      setTimeout(() => {
-        if (contentKey === "bio") {
-          cvButton.classList.add("visible");
-        }
-      }, 600); // 0.6 second delay
+      if (contentKey === "bio") {
+        setTimeout(() => {
+          // Only show if it hasn't been recently clicked
+          if (!cvBtn.classList.contains("is-downloading")) {
+            cvBtn.classList.add("visible");
+          }
+        }, 400); // 0.4 second delay
+      }
     }
   };
 
@@ -207,9 +213,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Separate event listener for the static CV button
   const cvButton = document.querySelector(".cv-download-btn");
-  cvButton?.addEventListener("click", () => {
-    // Find the link inside and click it programmatically
+  cvButton?.addEventListener("click", (e) => {
+    // Prevent multiple clicks
+    if (cvButton.classList.contains("is-downloading")) {
+      e.preventDefault();
+      return;
+    }
+
+    // 1. Trigger the download
     cvButton.querySelector("#cv-download-link")?.click();
+
+    // 2. Add a class to prevent it from reappearing immediately if user switches tabs fast
+    cvButton.classList.add("is-downloading");
+
+    // 3. Fade the button out by removing the 'visible' class
+    cvButton.classList.remove("visible");
   });
 
   // --- Project Item Hotspot Effect ---
