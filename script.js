@@ -150,6 +150,14 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
   };
 
+  // --- Function to set card height correctly ---
+  const setCardHeight = () => {
+    // Use a small timeout to allow the browser to render content before measuring
+    setTimeout(() => {
+      card.style.height = `${cardContent.scrollHeight}px`;
+    }, 50);
+  };
+
   const card = document.querySelector(".card");
 
   // --- Function to handle CV button animation ---
@@ -177,9 +185,16 @@ document.addEventListener("DOMContentLoaded", () => {
   // Set initial active state
   document.getElementById("bio-btn").classList.add("active");
   cardContent.innerHTML = contentData.bio;
-  // Set initial height
-  card.style.height = `${cardContent.scrollHeight}px`;
-  // Handle the CV button for the initial load
+
+  // Find the image in the bio content and set height after it loads
+  const profilePic = cardContent.querySelector(".profile-pic");
+  if (profilePic) {
+    profilePic.onload = setCardHeight;
+  }
+  // Also set height immediately in case image is cached or doesn't exist
+  setCardHeight();
+
+  // Handle the CV button visibility for the initial load
   handleCvButton("bio");
 
   // Create the background animation
@@ -205,8 +220,8 @@ document.addEventListener("DOMContentLoaded", () => {
           cardContent.innerHTML = contentData[contentKey];
         }
 
-        // 3. Set the card's height to match the new content's height
-        card.style.height = `${cardContent.scrollHeight}px`;
+        // 3. Set the card's height correctly
+        setCardHeight();
 
         // 4. Start fade-in animation for new content
         cardContent.style.opacity = 1;
