@@ -28,6 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const cardContent = document.getElementById("card-content");
   const navButtons = document.querySelectorAll(".nav-buttons button");
+  const modalOverlay = document.getElementById("project-modal-overlay");
 
   const contentData = {
     bio: `<div class="bio-header">
@@ -41,32 +42,6 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
           <p class="bio-summary">I build customized apps and websites to help brands and businesses of any size expand and stand out. I'm based in Ghana, but I collaborate with clients from anywhere. Let's work together to build your digital presence.</p>
           `,
-    stuff: `Here's some of my work:
-            <div class="project-list">
-              <a href="#" target="_blank" class="project-item-link">
-                <div class="project-item">
-                  <img src="https://placehold.co/120x90/292929/e8e8e8?text=..." alt="Project A" class="project-image" />
-                  <div class="project-description">
-                  <h3>Project A</h3>
-                  <p>A short description of this project.</p>
-                  <h3> </h3>
-                  <p> </p>
-                  </div>
-                </div>
-              </a>
-              <a href="#" target="_blank" class="project-item-link">
-                <div class="project-item project-item--reverse">
-                  <img src="https://placehold.co/120x90/292929/e8e8e8?text=..." alt="Project " class="project-image" />
-                  <div class="project-description">
-                  <h3>Project B</h3>
-                  <p>A short description of this other project.</p>
-                  <h3> </h3>
-                  <p> </p>
-                  </div>
-                </div>
-              </a>
-            </div>
-            `,
     contact: `You can reach me via email:<br>
               <div class="email-container">
                 <div class="email-text-wrapper">
@@ -97,6 +72,82 @@ document.addEventListener("DOMContentLoaded", () => {
                   </svg>
                 </a>
               </div>`,
+  };
+
+  const projects = [
+    {
+      id: "quest-app",
+      title: "Quest App",
+      shortDescription: "A simple quest management app built with React and TypeScript.",
+      longDescription: "This is a task management application designed with a gamified, quest-like interface. Built using modern web technologies like React and TypeScript, it allows users to easily add, track, and complete their daily tasks. The project is fully responsive and demonstrates clean UI/UX principles.",
+      imageUrl: "https://placehold.co/120x90/292929/e8e8e8?text=Quest+App",
+      liveUrl: "https://zosev-quests.vercel.app/",
+      githubUrl: "https://github.com/jobachx31/Quest-app",
+    },
+    {
+      id: "project-b",
+      title: "Project B",
+      shortDescription: "A short description of this other project.",
+      longDescription: "More details about Project B would go here. It showcases skills in X, Y, and Z, and was built to solve a particular problem for a client or as a personal exploration of a new technology.",
+      imageUrl: "https://placehold.co/120x90/292929/e8e8e8?text=...",
+      liveUrl: null,
+      githubUrl: "#",
+    },
+  ];
+
+  // --- Dynamic Content Functions ---
+  const buildProjectsHtml = () => {
+    const projectItemsHtml = projects
+      .map(
+        (p, index) => `
+      <div class="project-item ${index % 2 !== 0 ? "project-item--reverse" : ""}" data-project-id="${p.id}">
+        <img src="${p.imageUrl}" alt="${p.title} project screenshot" class="project-image" />
+        <div class="project-description">
+          <h3>${p.title}</h3>
+          <p>${p.shortDescription}</p>
+          ${
+            p.liveUrl
+              ? `<a href="${p.liveUrl}" target="_blank" class="project-visit-btn" onclick="event.stopPropagation()">Visit Site <span class="material-symbols-outlined">open_in_new</span></a>`
+              : ""
+          }
+        </div>
+      </div>`
+      )
+      .join("");
+
+    return `Here's some of my work: <div class="project-list">${projectItemsHtml}</div>`;
+  };
+
+  const populateModal = (projectId) => {
+    const project = projects.find((p) => p.id === projectId);
+    if (!project) return;
+
+    const modalContent = document.getElementById("project-modal-content");
+    modalContent.innerHTML = `
+      <div class="modal-preview">
+        ${
+          project.liveUrl
+            ? `<iframe src="${project.liveUrl}" title="${project.title} live preview" loading="lazy"></iframe>`
+            : `<div class="placeholder-preview">:)</div>`
+        }
+      </div>
+      <div class="modal-details">
+        <h2>${project.title}</h2>
+        <p>${project.longDescription}</p>
+        <div class="modal-actions">
+          ${
+            project.liveUrl
+              ? `<a href="${project.liveUrl}" target="_blank" class="cv-download-btn visible">Visit Site</a>`
+              : ""
+          }
+          ${
+            project.githubUrl && project.githubUrl !== "#"
+              ? `<a href="${project.githubUrl}" target="_blank" class="cv-download-btn normal-button visible">View Code</a>`
+              : ""
+          }
+        </div>
+      </div>
+    `;
   };
 
   const card = document.querySelector(".card");
@@ -148,7 +199,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Update content based on the button's id
         const contentKey = button.id.replace("-btn", ""); // e.g., "bio-btn" -> "bio"
-        cardContent.innerHTML = contentData[contentKey];
+        if (contentKey === "stuff") {
+          cardContent.innerHTML = buildProjectsHtml();
+        } else {
+          cardContent.innerHTML = contentData[contentKey];
+        }
 
         // 3. Set the card's height to match the new content's height
         card.style.height = `${cardContent.scrollHeight}px`;
@@ -167,6 +222,17 @@ document.addEventListener("DOMContentLoaded", () => {
   cardContent.addEventListener("click", (event) => {
     const copyButton = event.target.closest("#copy-email-btn");
     const emailLink = event.target.closest("#email-link");
+    const projectItem = event.target.closest(".project-item");
+
+    if (projectItem) {
+      // Only open the modal on screen widths greater than the mobile breakpoint (480px)
+      if (window.innerWidth > 480) {
+        const projectId = projectItem.dataset.projectId;
+        populateModal(projectId);
+        modalOverlay.classList.remove("hidden");
+      }
+      return; // Stop further execution
+    }
 
     // Trigger if the copy button OR the email link is clicked
     if (copyButton || emailLink) {
@@ -211,6 +277,16 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  // --- Modal Close Logic ---
+  const closeModal = () => {
+    modalOverlay.classList.add("hidden");
+    // Clear iframe src to stop video/audio from playing
+    const iframe = modalOverlay.querySelector("iframe");
+    if (iframe) iframe.src = "";
+  };
+
+  document.getElementById("modal-close-btn").addEventListener("click", closeModal);
+  modalOverlay.addEventListener("click", (e) => { if (e.target === modalOverlay) closeModal(); });
   // Separate event listener for the static CV button
   const cvButton = document.querySelector(".cv-download-btn");
   cvButton?.addEventListener("click", (e) => {
