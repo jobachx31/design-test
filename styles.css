@@ -53,7 +53,7 @@ body {
   flex-direction: column;
   min-height: 100vh;
   background: var(--background);
-  /* Hide scrollbar for IE, Edge and Firefox */
+   /*Hide scrollbar for IE, Edge and Firefox */
   overflow: hidden; /* Prevent scrolling on the body */
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
@@ -460,7 +460,7 @@ button.active {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
+  width: 100%; 
   height: 100%;
   background-color: rgba(0, 0, 0, 0.6);
   z-index: 1000;
@@ -484,7 +484,7 @@ button.active {
   position: relative;
   width: 100%;
   max-width: 800px;
-  max-height: 80vh;
+  height: 70vh;
   padding: 0;
   display: flex;
   flex-direction: column;
@@ -552,6 +552,25 @@ button.active {
   display: flex;
   flex-direction: column;
   text-align: left;
+  overflow-y: auto; /* Allow this column to scroll if content overflows */
+  padding-right: 1rem; /* Add some padding to prevent scrollbar from overlapping content */
+
+  /* Firefox scrollbar styling */
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent) transparent;
+}
+
+.modal-details::-webkit-scrollbar {
+  width: 5px;
+}
+
+.modal-details::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.modal-details::-webkit-scrollbar-thumb {
+  background-color: var(--accent);
+  border-radius: 10px;
 }
 
 .modal-details h2 {
@@ -562,7 +581,6 @@ button.active {
   font-size: 0.9rem;
   color: var(--hint);
   line-height: 1.6;
-  flex-grow: 1;
 }
 
 .modal-actions {
@@ -589,6 +607,7 @@ button.active {
   font-size: 0.75rem; /* 12px */
   width: 100%;
   box-sizing: border-box;
+  overflow: hidden;
 }
 
 .site-footer p {
@@ -626,6 +645,7 @@ button.active {
   html,
   body {
     font-size: 120%; /* Reduce base font size for better scaling on small screens */
+    overflow-y: auto;
     padding-bottom: 5rem; /* Add space for the fixed nav bar to prevent overlap */
   }
 
@@ -655,7 +675,7 @@ button.active {
     left: 0;
     /* Center the container and set its width */
     right: auto;
-    width: 75%;
+    width: 75%;    
     left: 50%;
     transform: translateX(-50%);
     gap: 0.5rem;

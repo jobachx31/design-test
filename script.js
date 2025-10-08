@@ -77,7 +77,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const projects = [
     {
       id: "quest-app",
-      title: "Quest App",
+      title: "Quests",
       shortDescription: "A simple quest management app built with React and TypeScript.",
       longDescription: "This is a task management application designed with a gamified, quest-like interface. Built using modern web technologies like React and TypeScript, it allows users to easily add, track, and complete their daily tasks. The project is fully responsive and demonstrates clean UI/UX principles.",
       imageUrl: "https://placehold.co/120x90/292929/e8e8e8?text=Quest+App",
