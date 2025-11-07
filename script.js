@@ -36,8 +36,8 @@ document.addEventListener("DOMContentLoaded", () => {
               <p class="greeting">Hey, I'm <b>Joseph</b></p>
               <p class="tagline">I build things for the web.</p>
             </div>
-            <div class="bio-image-container">
-              <img src="https://placehold.co/100x100/1dadc0/e8e8e8" alt="A picture of Joseph" class="profile-pic" />
+            <div class="bio-image-container"> 
+              <img src="./assets/profile-image.png" alt="A picture of Joseph" class="profile-pic" />
             </div>
           </div>
           <p class="bio-summary">I build customized apps and websites to help brands and businesses of any size expand and stand out. I'm based in Ghana, but I collaborate with clients from anywhere. Let's work together to build your digital presence.</p>
@@ -80,17 +80,17 @@ document.addEventListener("DOMContentLoaded", () => {
       title: "Quests",
       shortDescription: "A simple quest management app built with React and TypeScript.",
       longDescription: "This is a task management application designed with a gamified, quest-like interface. Built using modern web technologies like React and TypeScript, it allows users to easily add, track, and complete their daily tasks. The project is fully responsive and demonstrates clean UI/UX principles.",
-      imageUrl: "https://placehold.co/120x90/292929/e8e8e8?text=Quest+App",
+      imageUrl: "https://s.wordpress.com/mshots/v1/https%3A%2F%2Fzosev-quests.vercel.app%2F?w=120&h=90",
       liveUrl: "https://zosev-quests.vercel.app/",
       githubUrl: "https://github.com/jobachx31/Quest-app",
     },
     {
-      id: "project-b",
-      title: "Project B",
-      shortDescription: "A short description of this other project.",
-      longDescription: "More details about Project B would go here. It showcases skills in X, Y, and Z, and was built to solve a particular problem for a client or as a personal exploration of a new technology.",
-      imageUrl: "https://placehold.co/120x90/292929/e8e8e8?text=...",
-      liveUrl: null,
+      id: "toolbox-app",
+      title: "Toolbox",
+      shortDescription: "A web application for organizing useful sites and resources in one central place.",
+      longDescription: "Toolbox is a personal productivity tool designed to help users consolidate and manage their favorite websites, articles, and online resources. It provides a single, organized hub to store and quickly access valuable information, eliminating the need to bookmark countless pages or search through browser history. Built with modern web technologies, it offers a clean interface for efficient resource management.",
+      imageUrl: "https://s.wordpress.com/mshots/v1/http%3A%2F%2Ftoolbox-lake.vercel.app%2F?w=120&h=90",
+      liveUrl: "http://toolbox-lake.vercel.app",
       githubUrl: "#",
     },
   ];
@@ -100,54 +100,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const projectItemsHtml = projects
       .map(
         (p, index) => `
-      <div class="project-item ${index % 2 !== 0 ? "project-item--reverse" : ""}" data-project-id="${p.id}">
-        <img src="${p.imageUrl}" alt="${p.title} project screenshot" class="project-image" />
-        <div class="project-description">
-          <h3>${p.title}</h3>
-          <p>${p.shortDescription}</p>
-          ${
-            p.liveUrl
-              ? `<a href="${p.liveUrl}" target="_blank" class="project-visit-btn" onclick="event.stopPropagation()">Visit Site <span class="material-symbols-outlined">open_in_new</span></a>`
-              : ""
-          }
-        </div>
-      </div>`
+        <a href="${p.liveUrl || '#'}" target="_blank" class="project-item-link">
+          <div class="project-item">
+            <div class="project-description">
+              <h3>${p.title}</h3>
+              <p>${p.shortDescription}</p>
+            </div>
+          </div>
+        </a>`
       )
       .join("");
 
     return `Here's some of my work: <div class="project-list">${projectItemsHtml}</div>`;
-  };
-
-  const populateModal = (projectId) => {
-    const project = projects.find((p) => p.id === projectId);
-    if (!project) return;
-
-    const modalContent = document.getElementById("project-modal-content");
-    modalContent.innerHTML = `
-      <div class="modal-preview">
-        ${
-          project.liveUrl
-            ? `<iframe src="${project.liveUrl}" title="${project.title} live preview" loading="lazy"></iframe>`
-            : `<div class="placeholder-preview">:)</div>`
-        }
-      </div>
-      <div class="modal-details">
-        <h2>${project.title}</h2>
-        <p>${project.longDescription}</p>
-        <div class="modal-actions">
-          ${
-            project.liveUrl
-              ? `<a href="${project.liveUrl}" target="_blank" class="cv-download-btn visible">Visit Site</a>`
-              : ""
-          }
-          ${
-            project.githubUrl && project.githubUrl !== "#"
-              ? `<a href="${project.githubUrl}" target="_blank" class="cv-download-btn normal-button visible">View Code</a>`
-              : ""
-          }
-        </div>
-      </div>
-    `;
   };
 
   // --- Function to set card height correctly ---
@@ -237,17 +201,6 @@ document.addEventListener("DOMContentLoaded", () => {
   cardContent.addEventListener("click", (event) => {
     const copyButton = event.target.closest("#copy-email-btn");
     const emailLink = event.target.closest("#email-link");
-    const projectItem = event.target.closest(".project-item");
-
-    if (projectItem) {
-      // Only open the modal on screen widths greater than the mobile breakpoint (480px)
-      if (window.innerWidth > 480) {
-        const projectId = projectItem.dataset.projectId;
-        populateModal(projectId);
-        modalOverlay.classList.remove("hidden");
-      }
-      return; // Stop further execution
-    }
 
     // Trigger if the copy button OR the email link is clicked
     if (copyButton || emailLink) {
@@ -292,16 +245,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // --- Modal Close Logic ---
-  const closeModal = () => {
-    modalOverlay.classList.add("hidden");
-    // Clear iframe src to stop video/audio from playing
-    const iframe = modalOverlay.querySelector("iframe");
-    if (iframe) iframe.src = "";
-  };
-
-  document.getElementById("modal-close-btn").addEventListener("click", closeModal);
-  modalOverlay.addEventListener("click", (e) => { if (e.target === modalOverlay) closeModal(); });
   // Separate event listener for the static CV button
   const cvButton = document.querySelector(".cv-download-btn");
   cvButton?.addEventListener("click", (e) => {
